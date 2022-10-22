@@ -1,6 +1,5 @@
 package org.eclipsecon.testcontainersdemo;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -11,10 +10,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,6 +27,8 @@ class TestcontainersdemoApplicationTests {
             .withUsername("demo")
             .withPassword("supersecret")
             .withDatabaseName("test");
+    @Container
+    static MinioContainer minioContainer = new MinioContainer();
 
     @Autowired
     PhotoAlbumRepository repository;
@@ -41,6 +41,9 @@ class TestcontainersdemoApplicationTests {
         repository.deleteAll();
 
         LOG.info("Postgres Test DB URL: {}", container.getJdbcUrl());
+
+        Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(LOG);
+        minioContainer.followOutput(logConsumer);
     }
 
     // since SpringBoot 2.2.6
@@ -49,6 +52,11 @@ class TestcontainersdemoApplicationTests {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);
+
+        registry.add("s3.accessKey", minioContainer::getRootUser);
+        registry.add("s3.secretKey", minioContainer::getRootPassword);
+        registry.add("s3.endpointUrl", minioContainer::getEndpointUri);
+
     }
 
     @Test
