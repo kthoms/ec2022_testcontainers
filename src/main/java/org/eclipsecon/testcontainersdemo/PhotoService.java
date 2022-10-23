@@ -29,11 +29,9 @@ public class PhotoService {
         String bucketName = "album-" + album.getId();
 
         LOG.info("Creating bucket {}", bucketName);
-        s3.createBucket(
-                CreateBucketRequest.builder()
-                        .bucket(bucketName)
-                        .build()
-        );
+        var createBucketRequest = CreateBucketRequest.builder().bucket(bucketName).build();
+        s3.createBucket(createBucketRequest);
+        LOG.info("Bucket {} created.", bucketName);
     }
 
 }

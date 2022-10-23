@@ -46,6 +46,7 @@ public class S3Config {
                 .build();
 
         return S3Client.builder()
+                .forcePathStyle(true) // see https://stackoverflow.com/a/72221858
                 .credentialsProvider(credentialsProvider())
                 .serviceConfiguration(serviceConfiguration)
                 .region(region)

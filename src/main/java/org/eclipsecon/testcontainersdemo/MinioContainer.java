@@ -10,7 +10,7 @@ import java.time.Duration;
 public class MinioContainer extends GenericContainer<MinioContainer> {
     private static final int DEFAULT_PORT = 9000;
     private static final String DEFAULT_IMAGE = "minio/minio";
-    private static final String DEFAULT_TAG = "RELEASE.2022-10-21T22-37-48Z";
+    private static final String DEFAULT_TAG = "latest";
     private static final String DEFAULT_USER = "minio";
     private static final String DEFAULT_PASSWORD = "minio123";
     private static final String DEFAULT_STORAGE_DIRECTORY = "/data";
