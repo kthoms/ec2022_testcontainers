@@ -9,10 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,6 +36,12 @@ class TestcontainersdemoApplicationTests {
     @Container
     static MinioContainer minioContainer = new MinioContainer();
 
+    @Container
+    static GenericContainer camundaContainer = new GenericContainer(DockerImageName.parse("camunda/camunda-bpm-platform:7.18.0"))
+            .withExposedPorts(8080)
+            .waitingFor(Wait.forHttp("/camunda"))
+            .withStartupTimeout(Duration.of(6, ChronoUnit.MINUTES));
+
     @Autowired
     PhotoAlbumRepository repository;
 
@@ -44,11 +56,12 @@ class TestcontainersdemoApplicationTests {
 
         Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(LOG);
         minioContainer.followOutput(logConsumer);
+        camundaContainer.followOutput(logConsumer);
     }
 
     // since SpringBoot 2.2.6
     @DynamicPropertySource
-    static void properties (DynamicPropertyRegistry registry) {
+    static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);
