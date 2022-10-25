@@ -1,5 +1,6 @@
 package org.eclipsecon.testcontainersdemo;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Testcontainers
+@SuppressWarnings("all")
 class TestcontainersdemoApplicationTests {
     private static final Logger LOG = LoggerFactory.getLogger(TestcontainersdemoApplicationTests.class);
 
@@ -36,17 +38,18 @@ class TestcontainersdemoApplicationTests {
     @Container
     static MinioContainer minioContainer = new MinioContainer();
 
-    @Container
-    static GenericContainer camundaContainer = new GenericContainer(DockerImageName.parse("camunda/camunda-bpm-platform:7.18.0"))
-            .withExposedPorts(8080)
-            .waitingFor(Wait.forHttp("/camunda"))
-            .withStartupTimeout(Duration.of(6, ChronoUnit.MINUTES));
+    static CamundaContainer camundaContainer = new CamundaContainer();
 
     @Autowired
     PhotoAlbumRepository repository;
 
     @Autowired
     PhotoService service;
+
+    @BeforeAll
+    static void init () {
+        camundaContainer.start();
+    }
 
     @BeforeEach
     void setUp() {
@@ -56,7 +59,6 @@ class TestcontainersdemoApplicationTests {
 
         Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(LOG);
         minioContainer.followOutput(logConsumer);
-        camundaContainer.followOutput(logConsumer);
     }
 
     // since SpringBoot 2.2.6
