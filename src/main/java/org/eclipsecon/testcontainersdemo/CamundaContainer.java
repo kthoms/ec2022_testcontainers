@@ -24,5 +24,7 @@ public class CamundaContainer extends GenericContainer<CamundaContainer> {
         withStartupTimeout(Duration.of(6, ChronoUnit.MINUTES));
         withCreateContainerCmdModifier(cmd -> cmd.getHostConfig().withMemory(2147483648L /*2GB*/));
         withLogConsumer(new Slf4jLogConsumer(LOG));
+        withReuse(true)
+        ;
     }
 }
