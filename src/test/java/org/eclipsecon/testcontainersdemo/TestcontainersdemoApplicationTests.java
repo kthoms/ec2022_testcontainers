@@ -31,9 +31,12 @@ class TestcontainersdemoApplicationTests {
 		assertThat(repository.count()).isEqualTo(0);
 
         // WHEN
-        service.createAlbum("Memento Mori", "Depeche Mode");
+        PhotoAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
+
         // THEN
-        assertThat(repository.count()).isEqualTo(1);
+        assertThat(album.getId()).isNotNull();
+        assertThat(repository.findById(album.getId()))
+                .isPresent();
     }
 
     @Test
