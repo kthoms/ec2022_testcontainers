@@ -7,5 +7,3 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: mysecretpassword
-    volumes:
-      - ./.data:/var/lib/postgresql/data
