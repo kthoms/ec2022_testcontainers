@@ -14,11 +14,12 @@ public class PhotoService {
         this.photoAlbumRepository = photoAlbumRepository;
     }
 
-    public void createAlbum (String name, String artist) {
+    public PhotoAlbum createAlbum (String name, String artist) {
         var album = new PhotoAlbum();
         album.setName(name);
         album.setArtist(artist);
         photoAlbumRepository.save(album);
+        return album;
     }
 
 }
