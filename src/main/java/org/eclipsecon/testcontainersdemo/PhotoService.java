@@ -20,7 +20,7 @@ public class PhotoService {
         this.s3 = s3Client;
     }
 
-    public void createAlbum(String name, String artist) {
+    public PhotoAlbum createAlbum(String name, String artist) {
         var album = new PhotoAlbum();
         album.setName(name);
         album.setArtist(artist);
@@ -32,6 +32,7 @@ public class PhotoService {
         var createBucketRequest = CreateBucketRequest.builder().bucket(bucketName).build();
         s3.createBucket(createBucketRequest);
         LOG.info("Bucket {} created.", bucketName);
+        return album;
     }
 
 }
