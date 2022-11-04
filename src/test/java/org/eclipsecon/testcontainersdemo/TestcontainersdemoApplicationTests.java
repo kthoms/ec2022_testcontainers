@@ -1,11 +1,11 @@
 package org.eclipsecon.testcontainersdemo;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,10 +23,10 @@ class TestcontainersdemoApplicationTests {
             .withDatabaseName("test");
 
     @Autowired
-    PhotoAlbumRepository repository;
+    MusicAlbumRepository repository;
 
     @Autowired
-    PhotoService service;
+    MusicService service;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class TestcontainersdemoApplicationTests {
         assertThat(repository.count()).isEqualTo(0);
 
         // WHEN
-        PhotoAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
+        MusicAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
 
         // THEN
         assertThat(album.getId()).isNotNull();
