@@ -41,10 +41,10 @@ class TestcontainersdemoApplicationTests {
     static CamundaContainer camundaContainer = new CamundaContainer();
 
     @Autowired
-    PhotoAlbumRepository repository;
+    MusicAlbumRepository repository;
 
     @Autowired
-    PhotoService service;
+    MusicService service;
 
     @BeforeAll
     static void init () {
@@ -80,7 +80,7 @@ class TestcontainersdemoApplicationTests {
         assertThat(repository.count()).isEqualTo(0);
 
         // WHEN
-        PhotoAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
+        MusicAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
 
         // THEN
         assertThat(album.getId()).isNotNull();
