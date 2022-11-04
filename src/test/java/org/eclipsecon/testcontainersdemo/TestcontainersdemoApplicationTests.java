@@ -1,6 +1,5 @@
 package org.eclipsecon.testcontainersdemo;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -29,10 +28,10 @@ class TestcontainersdemoApplicationTests {
             .withDatabaseName("test");
 
     @Autowired
-    PhotoAlbumRepository repository;
+    MusicAlbumRepository repository;
 
     @Autowired
-    PhotoService service;
+    MusicService service;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +54,7 @@ class TestcontainersdemoApplicationTests {
         assertThat(repository.count()).isEqualTo(0);
 
         // WHEN
-        PhotoAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
+        MusicAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
 
         // THEN
         assertThat(album.getId()).isNotNull();

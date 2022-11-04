@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PHOTO_ALBUM", uniqueConstraints = @UniqueConstraint(name = "ALBUM_NAME_ARTIST", columnNames = {"name", "artist"}))
-public class PhotoAlbum {
+public class MusicAlbum {
     @Id
     @GeneratedValue
     private Long id;
