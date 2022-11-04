@@ -31,10 +31,10 @@ class TestcontainersdemoApplicationTests {
     static MinioContainer minioContainer = new MinioContainer();
 
     @Autowired
-    PhotoAlbumRepository repository;
+    MusicAlbumRepository repository;
 
     @Autowired
-    PhotoService service;
+    MusicService service;
 
     @BeforeEach
     void setUp() {
@@ -65,7 +65,7 @@ class TestcontainersdemoApplicationTests {
         assertThat(repository.count()).isEqualTo(0);
 
         // WHEN
-        PhotoAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
+        MusicAlbum album = service.createAlbum("Memento Mori", "Depeche Mode");
 
         // THEN
         assertThat(album.getId()).isNotNull();
